@@ -26,8 +26,29 @@ class Generator
             catch{}
     
         }
+
+        string linkcode = "";
+        Console.ForegroundColor = ConsoleColor.Yellow;
+        Console.WriteLine("Input pscode link code, type no for no ps code. (its the link code, not share code):");
+        Console.ForegroundColor = ConsoleColor.Blue;
+        while (linkcode=="")
+        {
+            Console.Write(">");
+            try
+            {
+                linkcode = Console.ReadLine();
+                if (linkcode.ToLower().Equals("no")){
+                    linkcode = "";
+                    break;
+                }
+            }
+            catch{}
+
+        }
         string launcher_name = "";
+        Console.ForegroundColor = ConsoleColor.Yellow;
         Console.WriteLine("Input launcher name:");
+        Console.ForegroundColor = ConsoleColor.Blue;
         while (launcher_name == "")
         {
             Console.Write(">");
@@ -39,12 +60,12 @@ class Generator
     
         }
         
-
-        await build_files(place_id, launcher_name);
+        Console.ForegroundColor = ConsoleColor.Gray;
+        await build_files(place_id,linkcode,launcher_name);
         
     }
     
-    static async Task build_files(Int64 place_id, string name)
+    static async Task build_files(Int64 place_id, string linkcode, string name)
     {   
         Console.WriteLine("Creating launcher for game id: "+place_id);
         using HttpClient client = new HttpClient();
@@ -103,7 +124,7 @@ class Generator
         sb.AppendLine("        static void Main(string[] args)");
         sb.AppendLine("        {");
         sb.AppendLine("            string Roblox_EXE = Roblox_Version();");
-        sb.AppendLine("            Process.Start(Roblox_EXE, \"roblox://placeId="+place_id+"\");");
+        sb.AppendLine("            Process.Start(Roblox_EXE, \"roblox://placeId="+place_id+"&linkCode="+linkcode+"\");");
         sb.AppendLine("        }");
         sb.AppendLine();
         sb.AppendLine("        static string Roblox_Version()");
